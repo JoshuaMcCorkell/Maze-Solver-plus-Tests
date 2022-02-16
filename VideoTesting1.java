@@ -45,4 +45,4 @@ public class VideoTesting1{
         readFileData();
     }
 }
-//1:(1:26:53)
+//1:36:50 (1:26:53)
