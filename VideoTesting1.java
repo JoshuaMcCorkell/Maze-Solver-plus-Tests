@@ -1,6 +1,7 @@
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -40,9 +41,21 @@ public class VideoTesting1{
         readFile.close();
     }
 
+    public static void queueTest() {
+        LinkedList<String> names = new LinkedList<>();
+        names.add("Josh");
+        names.add("Tim");
+        names.add("Jill");
+        System.out.println(names.remove());
+        System.out.println(names.remove());
+        System.out.println(names.remove());
+
+    }
+
     public static void main(String[] args) throws FileNotFoundException {
         //gradesInOut();
-        readFileData();
+        //readFileData();
+        queueTest();
     }
 }
-//1:36:50 (1:26:53)
+//1:54:07 (1:26:53)
