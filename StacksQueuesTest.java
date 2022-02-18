@@ -33,7 +33,5 @@ public class StacksQueuesTest {
     }
 }
 
-//2:08:15 (1:26:53)
-
 //pop() and removeFirst() and remove(no argument) are EQUIVALENT. push(arg) puts the argument as the FIRST element, and add(arg) puts the argument as the LAST element.
 //pop, removeFirst etc all remove the FIRST element.
