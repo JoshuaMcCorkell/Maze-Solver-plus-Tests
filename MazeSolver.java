@@ -20,6 +20,6 @@ public class MazeSolver {
         path.push(p);
 
         maze[path.peek().y][path.peek().x] = 0;
-        System.out.print(maze[0][3]);
     }
 }
+//2:56:00
