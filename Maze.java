@@ -53,6 +53,8 @@ public class Maze {
                 current[i] = new int[arrayRowLen];
                 System.arraycopy(arrayRow, 0, current[i], 0, arrayRowLen);
             }
+
+            readFile.close();
     }
 
     /**

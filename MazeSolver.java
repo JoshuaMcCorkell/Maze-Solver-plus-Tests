@@ -68,6 +68,7 @@ public class MazeSolver {
             System.out.println("Dead end! Backtracking to: " + path.peek());
             if(path.isEmpty()) {
                 System.out.println("***No Path Found***");
+                System.exit(0);
             }
         }
     }
