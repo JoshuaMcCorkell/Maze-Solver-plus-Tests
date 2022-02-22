@@ -1,3 +1,7 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 public class Maze {
     public int[][] current;
     public Position start;
@@ -12,6 +16,43 @@ public class Maze {
         baseMaze = data;
         current = data;
         start = startPosition;
+    }
+
+    /**
+     * Constructs a maze based on a File containing the maze as 1s and 0s (and 2s).
+     * @param file  The file the maze is found in
+     * @throws FileNotFoundException
+     */
+    public Maze(File file) throws FileNotFoundException {
+            
+            //Create the scanner and initialize the variables
+            Scanner readFile = new Scanner(file);
+
+            String[] dimensions = readFile.nextLine().split(",");
+            baseMaze = new int[Integer.parseInt(dimensions[1])][Integer.parseInt(dimensions[0])];
+            
+            String[] startPos = readFile.nextLine().split(",");
+            start = new Position(Integer.parseInt(startPos[0]), Integer.parseInt(startPos[1]));
+            
+            //Read from the File
+            String[] line;
+            int row = 0;
+            while(readFile.hasNextLine()) {
+                line = readFile.nextLine().split("");
+                for (int i = 0; i < line.length; i++) {
+                    baseMaze[row][i] = Integer.parseInt(line[i]);
+                }
+                row++;
+            }
+
+            //Copy into the 'Current' Array
+            current = new int[baseMaze.length][];
+            for(int i = 0; i < baseMaze.length; i++) {
+                int[] arrayRow = baseMaze[i];
+                int arrayRowLen = arrayRow.length;
+                current[i] = new int[arrayRowLen];
+                System.arraycopy(arrayRow, 0, current[i], 0, arrayRowLen);
+            }
     }
 
     /**
@@ -46,4 +87,6 @@ public class Maze {
     public int getBase(Position pos) {
         return baseMaze[pos.y][pos.x];
     }
+
+    
 }

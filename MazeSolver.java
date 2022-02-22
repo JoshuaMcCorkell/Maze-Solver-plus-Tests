@@ -1,26 +1,20 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 
 public class MazeSolver {
 
+    /**This just defines what happens once the game is won. */
     static void win() {
         System.out.println("We Win!! Position is: " + path.peek());
         System.exit(0);
     }
 
-    static int[][] myMaze = {
-        {2, 1, 1, 0, 0, 1, 1, 1},
-        {1, 1, 1, 1, 1, 0, 1, 1},
-        {0, 0, 0, 0, 1, 0, 0, 1},
-        {0, 1, 1, 1, 1, 0, 1, 1},
-        {0, 1, 0, 0, 0, 0, 1, 0},
-        {0, 1, 1, 1, 1, 1, 1, 0}
-    };
-
     // A 'Stack' containing the current path (made up of (x, y) positions)
     static LinkedList<Position> path = new LinkedList<>();
 
-    public static void main(String[] args) {
-        Maze maze = new Maze(myMaze, new Position(5, 0));
+    public static void main(String[] args) throws FileNotFoundException {
+        Maze maze = new Maze(new File("Maze1.txt"));
         path.push(maze.start);
         Position next;
 
@@ -69,8 +63,12 @@ public class MazeSolver {
                 System.out.println("Moved right. Postition now: " + path.peek());
                 continue;
             }
+
+            maze.set(path.pop(), 0);
+            System.out.println("Dead end! Backtracking to: " + path.peek());
+            if(path.isEmpty()) {
+                System.out.println("***No Path Found***");
+            }
         }
-        
     }
 }
-//2:56:00
