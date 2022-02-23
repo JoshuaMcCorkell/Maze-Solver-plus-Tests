@@ -19,32 +19,43 @@ public class Maze {
     }
 
     /**
-     * Constructs a maze based on a File containing the maze as 1s and 0s (and 2s).
+     * Constructs a maze based on a File containing the maze.
+     * 1 = Path, 0 = Wall, 2 = Destination
      * @param file  The file the maze is found in
      * @throws FileNotFoundException
      */
     public Maze(File file) throws FileNotFoundException {
-            
             //Create the scanner and initialize the variables
             Scanner readFile = new Scanner(file);
 
-            String[] dimensions = readFile.nextLine().split(",");
-            baseMaze = new int[Integer.parseInt(dimensions[1])][Integer.parseInt(dimensions[0])];
+            String[] dimensionsString = readFile.nextLine().split(",");
+            int[] dimensions = {Integer.parseInt(dimensionsString[0]), Integer.parseInt(dimensionsString[1])};
+
+            baseMaze = new int[dimensions[1]][dimensions[0]];
             
             String[] startPos = readFile.nextLine().split(",");
             start = new Position(Integer.parseInt(startPos[0]), Integer.parseInt(startPos[1]));
             
             //Read from the File
-            String[] line;
-            int row = 0;
-            while(readFile.hasNextLine()) {
-                line = readFile.nextLine().split("");
-                for (int i = 0; i < line.length; i++) {
-                    baseMaze[row][i] = Integer.parseInt(line[i]);
+            try{
+                String[] line;
+                for (int i = 0; i < dimensions[1]; i++) {
+                    line = readFile.nextLine().split("");
+                    for (int j = 0; j < dimensions[0]; j++) {
+                        baseMaze[i][j] = Integer.parseInt(line[j]);
+                    }
                 }
-                row++;
+            } catch(java.util.NoSuchElementException e) {
+                System.out.println("File was not formatted correctly! There are probably not enough rows in the maze to match the dimensions given.");
+                e.printStackTrace();
+                readFile.close();
+                throw e;
+            } catch(java.lang.ArrayIndexOutOfBoundsException e) {
+                System.out.println("File was not formatted correctly! There are probably not enough blocks (numbers) in one of the rows of the maze to match the dimensions given.");
+                e.printStackTrace();
+                readFile.close();
+                throw e;
             }
-
             //Copy into the 'Current' Array
             current = new int[baseMaze.length][];
             for(int i = 0; i < baseMaze.length; i++) {
@@ -53,7 +64,6 @@ public class Maze {
                 current[i] = new int[arrayRowLen];
                 System.arraycopy(arrayRow, 0, current[i], 0, arrayRowLen);
             }
-
             readFile.close();
     }
 
@@ -68,17 +78,16 @@ public class Maze {
 
     /**
      * Returns the value in the 'Current' maze data.
+     * 
+     * Returns -2 if position is out of bounds.
      * @param pos  The position of the value you want to return.
      * @return The value of the block pointed to by 'pos'.
      */
     public int get(Position pos) {
-        try {
-            return current[pos.y][pos.x];
-        } catch (Exception e) {
-            //Nothing at the moment
+        if(pos.y < 0 || pos.x < 0 || pos.y >= baseMaze.length || pos.x >= baseMaze[pos.y].length ) {
             return -2;
         }
-        
+        return current[pos.y][pos.x];
     }
 
     /**
@@ -89,6 +98,4 @@ public class Maze {
     public int getBase(Position pos) {
         return baseMaze[pos.y][pos.x];
     }
-
-    
 }
