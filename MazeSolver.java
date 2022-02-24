@@ -8,9 +8,19 @@ public class MazeSolver {
     private Maze maze;
     private boolean done = false;
 
-    /**This just defines what happens once the game is won. */
+    /**
+     * Creates a new 'MazeSolver' object with the maze passed in.
+     * @param toSolve  The maze to solve.
+     */
+    public MazeSolver(Maze toSolve) {
+        maze = toSolve;
+        path.push(maze.start);
+        pathString.push("Starting at: " + maze.start);
+    }
+
+    /**This just defines what happens once the maze is solved. */
     private void win() {
-        pathString.add("We Win!! Position is: " + path.peek());
+        pathString.add("Path found! Position is: " + path.peek());
         done = true;
     }
 
@@ -35,20 +45,14 @@ public class MazeSolver {
         return false;
     }
 
-    /**
-     * Creates a new 'MazeSolver' object with the maze passed in.
-     * @param toSolve  The maze to solve.
+    /**Solves the current maze, outputting it's progress to the console.
+     * 
+     * <strong>This method will change the base maze.</strong>
      */
-    public MazeSolver(Maze toSolve) {
-        maze = toSolve;
-        path.push(maze.start);
-        pathString.push("Starting at: " + maze.start);
-    }
-
-    /**Solves the current maze, outputting it's progress to the console. */
     public boolean solve() {
         Position next;
 
+        //Main Loop that solves the maze.
         while (true) {
             if (done) {
                 return true;
@@ -78,7 +82,7 @@ public class MazeSolver {
             }
 
             //dead end
-            maze.set(path.pop(), 0);
+            maze.set(path.pop(), -1);
             pathString.removeLast();
             if(path.isEmpty()) {
                 //No Path
@@ -87,15 +91,22 @@ public class MazeSolver {
         }
     }
 
+    /**Prints the path the solver took to the console. */
+    public void printPath() {
+        for(String s : pathString) {
+            System.out.println(s);
+            
+        }
+        System.out.println("Length of path: " + path.size() + " steps");
+    }
+    
     public static void main(String[] args) throws FileNotFoundException {
-        Maze ourMaze = new Maze(new File("Maze1.txt"));
-        MazeSolver solver = new MazeSolver(ourMaze);
+        Maze myMaze = new Maze(new File("Maze1.txt"));
+        MazeSolver solver = new MazeSolver(myMaze);
         if (solver.solve()) {
-            for (String s : solver.pathString){
-                System.out.println(s);
-            }
+            solver.printPath();
         } else {
             System.out.println("No Path Found...");
-        }
+        }   
     }
-}  //3:34:32
+}
